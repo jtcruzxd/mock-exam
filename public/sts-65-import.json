@@ -1,0 +1,687 @@
+[
+  {
+    "id": 4001,
+    "question": "[Part I - Identification] The process of cultivating plants and domesticating animals for food.",
+    "choices": [
+      { "label": "a", "text": "Agriculture / Domestication" },
+      { "label": "b", "text": "Industrialization" },
+      { "label": "c", "text": "Urbanization" },
+      { "label": "d", "text": "Commercialization" }
+    ],
+    "answer": "a"
+  },
+  {
+    "id": 4002,
+    "question": "[Part I - Identification] The mathematical concept developed in ancient India that is essential to the modern number system.",
+    "choices": [
+      { "label": "a", "text": "Pi" },
+      { "label": "b", "text": "Algebra" },
+      { "label": "c", "text": "Zero" },
+      { "label": "d", "text": "Calculus" }
+    ],
+    "answer": "c"
+  },
+  {
+    "id": 4003,
+    "question": "[Part I - Identification] The Greek philosopher known for systematic observation and classification of living things.",
+    "choices": [
+      { "label": "a", "text": "Plato" },
+      { "label": "b", "text": "Socrates" },
+      { "label": "c", "text": "Pythagoras" },
+      { "label": "d", "text": "Aristotle" }
+    ],
+    "answer": "d"
+  },
+  {
+    "id": 4004,
+    "question": "[Part I - Identification] A systematic process of observing, forming hypotheses, testing, and drawing conclusions.",
+    "choices": [
+      { "label": "a", "text": "Deductive reasoning" },
+      { "label": "b", "text": "Scientific method" },
+      { "label": "c", "text": "Trial and error" },
+      { "label": "d", "text": "Philosophical inquiry" }
+    ],
+    "answer": "b"
+  },
+  {
+    "id": 4005,
+    "question": "[Part I - Identification] The inventor whose improvements made the steam engine more efficient during the Industrial Revolution.",
+    "choices": [
+      { "label": "a", "text": "Thomas Edison" },
+      { "label": "b", "text": "Nikola Tesla" },
+      { "label": "c", "text": "James Watt" },
+      { "label": "d", "text": "Isaac Newton" }
+    ],
+    "answer": "c"
+  },
+  {
+    "id": 4006,
+    "question": "[Part I - Identification] The historical period dated c. 3000 BCE–500 CE, known for early foundations in writing, mathematics, astronomy, and engineering.",
+    "choices": [
+      { "label": "a", "text": "Middle Ages" },
+      { "label": "b", "text": "Renaissance" },
+      { "label": "c", "text": "Ancient Age" },
+      { "label": "d", "text": "Industrial Age" }
+    ],
+    "answer": "c"
+  },
+  {
+    "id": 4007,
+    "question": "[Part I - Identification] The clay record-keeping object from ancient Mesopotamia that bears wedge-shaped writing.",
+    "choices": [
+      { "label": "a", "text": "Papyrus scroll" },
+      { "label": "b", "text": "Cuneiform tablet" },
+      { "label": "c", "text": "Hieroglyphic stone" },
+      { "label": "d", "text": "Wax tablet" }
+    ],
+    "answer": "b"
+  },
+  {
+    "id": 4008,
+    "question": "[Part I - Identification] The astronomical instrument widely used in the medieval Islamic world.",
+    "choices": [
+      { "label": "a", "text": "Telescope" },
+      { "label": "b", "text": "Sextant" },
+      { "label": "c", "text": "Astrolabe" },
+      { "label": "d", "text": "Compass" }
+    ],
+    "answer": "c"
+  },
+  {
+    "id": 4009,
+    "question": "[Part I - Identification] The country where paper originated before it spread westward.",
+    "choices": [
+      { "label": "a", "text": "India" },
+      { "label": "b", "text": "Egypt" },
+      { "label": "c", "text": "Korea" },
+      { "label": "d", "text": "China" }
+    ],
+    "answer": "d"
+  },
+  {
+    "id": 4010,
+    "question": "[Part I - Identification] The country where movable metal type was used before the fifteenth century, earlier than Gutenberg.",
+    "choices": [
+      { "label": "a", "text": "China" },
+      { "label": "b", "text": "Japan" },
+      { "label": "c", "text": "Korea" },
+      { "label": "d", "text": "Germany" }
+    ],
+    "answer": "c"
+  },
+  {
+    "id": 4011,
+    "question": "[Part I - Identification] The city where the Gutenberg Bible was produced around 1454–1455.",
+    "choices": [
+      { "label": "a", "text": "Berlin" },
+      { "label": "b", "text": "Rome" },
+      { "label": "c", "text": "Paris" },
+      { "label": "d", "text": "Mainz" }
+    ],
+    "answer": "d"
+  },
+  {
+    "id": 4012,
+    "question": "[Part I - Identification] The astronomer who proposed a Sun-centered model during the Scientific Revolution.",
+    "choices": [
+      { "label": "a", "text": "Galileo Galilei" },
+      { "label": "b", "text": "Nicolaus Copernicus" },
+      { "label": "c", "text": "Johannes Kepler" },
+      { "label": "d", "text": "Tycho Brahe" }
+    ],
+    "answer": "b"
+  },
+  {
+    "id": 4013,
+    "question": "[Part I - Identification] According to STS, these often influence which technologies are developed and how knowledge is used, as shown by ancient irrigation and farming.",
+    "choices": [
+      { "label": "a", "text": "Individual preferences" },
+      { "label": "b", "text": "Random events" },
+      { "label": "c", "text": "Social needs" },
+      { "label": "d", "text": "Government decrees" }
+    ],
+    "answer": "c"
+  },
+  {
+    "id": 4014,
+    "question": "[Part I - Identification] The 18th–19th century process that connected machines, energy, factories, and transportation, and raised issues of labor, inequality, and environmental effects.",
+    "choices": [
+      { "label": "a", "text": "Globalization" },
+      { "label": "b", "text": "Industrialization" },
+      { "label": "c", "text": "Urbanization" },
+      { "label": "d", "text": "Modernization" }
+    ],
+    "answer": "b"
+  },
+  {
+    "id": 4015,
+    "question": "[Part I - Identification] The period c. 500–1500 CE when scholars preserved, translated, criticized, and expanded earlier works.",
+    "choices": [
+      { "label": "a", "text": "Ancient Age" },
+      { "label": "b", "text": "Renaissance" },
+      { "label": "c", "text": "Middle Ages / Medieval period" },
+      { "label": "d", "text": "Enlightenment" }
+    ],
+    "answer": "c"
+  },
+  {
+    "id": 4016,
+    "question": "[Part I - Identification] The executive department of the Philippine government that coordinates science and technology projects and formulates S&T policies.",
+    "choices": [
+      { "label": "a", "text": "Department of Education (DepEd)" },
+      { "label": "b", "text": "Department of Science and Technology (DOST)" },
+      { "label": "c", "text": "Commission on Higher Education (CHED)" },
+      { "label": "d", "text": "Department of Trade and Industry (DTI)" }
+    ],
+    "answer": "b"
+  },
+  {
+    "id": 4017,
+    "question": "[Part I - Identification] The large warships built by pre-colonial Filipinos.",
+    "choices": [
+      { "label": "a", "text": "Balangay" },
+      { "label": "b", "text": "Paraw" },
+      { "label": "c", "text": "Caracoa" },
+      { "label": "d", "text": "Bangka" }
+    ],
+    "answer": "c"
+  },
+  {
+    "id": 4018,
+    "question": "[Part I - Identification] By the 10th century A.D., pre-colonial Filipinos were already weaving cotton and smelting this metal.",
+    "choices": [
+      { "label": "a", "text": "Gold" },
+      { "label": "b", "text": "Copper" },
+      { "label": "c", "text": "Bronze" },
+      { "label": "d", "text": "Iron" }
+    ],
+    "answer": "d"
+  },
+  {
+    "id": 4019,
+    "question": "[Part I - Identification] The type of pre-colonial communities that developed more sophisticated technology because of their access to trade and maritime activities.",
+    "choices": [
+      { "label": "a", "text": "Mountain communities" },
+      { "label": "b", "text": "Forest communities" },
+      { "label": "c", "text": "Coastal communities" },
+      { "label": "d", "text": "River communities" }
+    ],
+    "answer": "c"
+  },
+  {
+    "id": 4020,
+    "question": "[Part I - Identification] Because pre-colonial Filipinos did not develop a written literary tradition, much of their history is reconstructed through these findings and early visitors' accounts.",
+    "choices": [
+      { "label": "a", "text": "Oral traditions" },
+      { "label": "b", "text": "Archaeological findings" },
+      { "label": "c", "text": "Colonial records" },
+      { "label": "d", "text": "Religious texts" }
+    ],
+    "answer": "b"
+  },
+  {
+    "id": 4021,
+    "question": "[Part I - Identification] The groups that mainly established schools in the Philippines during the Spanish period.",
+    "choices": [
+      { "label": "a", "text": "Spanish soldiers" },
+      { "label": "b", "text": "Local chieftains" },
+      { "label": "c", "text": "Religious orders" },
+      { "label": "d", "text": "Merchants" }
+    ],
+    "answer": "c"
+  },
+  {
+    "id": 4022,
+    "question": "[Part I - Identification] Along with pharmacy, the field on which Spanish-era scientific research mainly focused, especially the study of infectious diseases.",
+    "choices": [
+      { "label": "a", "text": "Astronomy" },
+      { "label": "b", "text": "Medicine" },
+      { "label": "c", "text": "Engineering" },
+      { "label": "d", "text": "Agriculture" }
+    ],
+    "answer": "b"
+  },
+  {
+    "id": 4023,
+    "question": "[Part I - Identification] The factor of S&T development shown by higher education being available mainly to the elite during the Spanish period.",
+    "choices": [
+      { "label": "a", "text": "Religious influence" },
+      { "label": "b", "text": "Technological advancement" },
+      { "label": "c", "text": "Economic and educational policies" },
+      { "label": "d", "text": "Geographic isolation" }
+    ],
+    "answer": "c"
+  },
+  {
+    "id": 4024,
+    "question": "[Part I - Identification] Together with stones and tiles, the construction material introduced by the Spaniards through new building techniques.",
+    "choices": [
+      { "label": "a", "text": "Bamboo" },
+      { "label": "b", "text": "Concrete" },
+      { "label": "c", "text": "Wood" },
+      { "label": "d", "text": "Bricks" }
+    ],
+    "answer": "d"
+  },
+  {
+    "id": 4025,
+    "question": "[Part I - Identification] Aside from social and economic progress, science and technology are closely connected to a country's political sovereignty and this.",
+    "choices": [
+      { "label": "a", "text": "Cultural identity" },
+      { "label": "b", "text": "Military strength" },
+      { "label": "c", "text": "Economic self-reliance" },
+      { "label": "d", "text": "Religious freedom" }
+    ],
+    "answer": "c"
+  },
+  {
+    "id": 4026,
+    "question": "[Part II - Multiple Choice] A Philippine coffee cooperative uses online platforms to sell abroad and joins virtual training with foreign roasters. Which outcome best shows how globalization can support economic growth?",
+    "choices": [
+      { "label": "a", "text": "Local producers no longer need skills development." },
+      { "label": "b", "text": "Producers gain wider markets and access to new knowledge." },
+      { "label": "c", "text": "All local businesses become independent of foreign competition." },
+      { "label": "d", "text": "Technology has no effect on trade." }
+    ],
+    "answer": "b"
+  },
+  {
+    "id": 4027,
+    "question": "[Part II - Multiple Choice] A Filipino researcher adapts an imported water-testing device so that local communities can repair it using affordable parts. This is an example of:",
+    "choices": [
+      { "label": "a", "text": "Technological isolation" },
+      { "label": "b", "text": "Technology transfer and local adaptation" },
+      { "label": "c", "text": "Consumerism" },
+      { "label": "d", "text": "Enframing" }
+    ],
+    "answer": "b"
+  },
+  {
+    "id": 4028,
+    "question": "[Part II - Multiple Choice] Which conclusion about colonial contributions to Philippine science and technology is most accurate?",
+    "choices": [
+      { "label": "a", "text": "Colonial periods had no influence on Philippine institutions." },
+      { "label": "b", "text": "All Philippine technologies were created by colonizers." },
+      { "label": "c", "text": "Colonial rule introduced some technologies and institutions, which Filipinos later adapted to local needs." },
+      { "label": "d", "text": "Colonial technologies immediately removed social inequality." }
+    ],
+    "answer": "c"
+  },
+  {
+    "id": 4029,
+    "question": "[Part II - Multiple Choice] Agricultural scientists develop salt-tolerant rice, and extension workers train farmers to use it. Farmers later report more stable harvests and incomes. What does this best demonstrate?",
+    "choices": [
+      { "label": "a", "text": "Locally relevant research can contribute to economic development." },
+      { "label": "b", "text": "Scientific research has no connection to farming." },
+      { "label": "c", "text": "Farmers should never receive technological training." },
+      { "label": "d", "text": "Economic development depends only on imported products." }
+    ],
+    "answer": "a"
+  },
+  {
+    "id": 4030,
+    "question": "[Part II - Multiple Choice] A hospital needs an affordable device to help premature infants in low-resource settings. Which Filipino innovator is most closely associated with low-cost infant care equipment?",
+    "choices": [
+      { "label": "a", "text": "Fe del Mundo" },
+      { "label": "b", "text": "Arturo Alcaraz" },
+      { "label": "c", "text": "Gregorio Zara" },
+      { "label": "d", "text": "Ramon Barba" }
+    ],
+    "answer": "a"
+  },
+  {
+    "id": 4031,
+    "question": "[Part II - Multiple Choice] A community plans to develop electricity from underground heat and steam in a volcanic region. Which Filipino scientist's work is most relevant?",
+    "choices": [
+      { "label": "a", "text": "Fe del Mundo" },
+      { "label": "b", "text": "Arturo Alcaraz" },
+      { "label": "c", "text": "Agapito Flores" },
+      { "label": "d", "text": "Julian Banzon" }
+    ],
+    "answer": "b"
+  },
+  {
+    "id": 4032,
+    "question": "[Part II - Multiple Choice] A museum label states that Agapito Flores invented the fluorescent lamp, but historical records show that fluorescent-lamp patents existed earlier. What is the most responsible action for the museum?",
+    "choices": [
+      { "label": "a", "text": "Repeat the claim without checking evidence." },
+      { "label": "b", "text": "Remove all references to Filipino inventors." },
+      { "label": "c", "text": "Verify primary sources and present the attribution carefully." },
+      { "label": "d", "text": "Assume every popular story is historically accurate." }
+    ],
+    "answer": "c"
+  },
+  {
+    "id": 4033,
+    "question": "[Part II - Multiple Choice] A coastal town needs official forecasts on rainfall, typhoons, and climate conditions before ordering evacuations. Which agency should it consult?",
+    "choices": [
+      { "label": "a", "text": "PAGASA" },
+      { "label": "b", "text": "PHIVOLCS" },
+      { "label": "c", "text": "National Museum" },
+      { "label": "d", "text": "Commission on Elections" }
+    ],
+    "answer": "a"
+  },
+  {
+    "id": 4034,
+    "question": "[Part II - Multiple Choice] After an earthquake near an active volcano, officials need information about volcanic activity, fault movement, and possible tsunamis. Which agency is most appropriate?",
+    "choices": [
+      { "label": "a", "text": "PAGASA" },
+      { "label": "b", "text": "PHIVOLCS" },
+      { "label": "c", "text": "Department of Tourism" },
+      { "label": "d", "text": "Department of Agriculture" }
+    ],
+    "answer": "b"
+  },
+  {
+    "id": 4035,
+    "question": "[Part II - Multiple Choice] A financially disadvantaged but academically talented student wants support to pursue a degree in engineering. Which law is most closely associated with this type of S&T scholarship?",
+    "choices": [
+      { "label": "a", "text": "RA 2067" },
+      { "label": "b", "text": "RA 7687" },
+      { "label": "c", "text": "RA 8439" },
+      { "label": "d", "text": "RA 7394" }
+    ],
+    "answer": "b"
+  },
+  {
+    "id": 4036,
+    "question": "[Part II - Multiple Choice] A policymaker proposes creating a national body to strengthen organized scientific research and development. Which law historically established the National Science Development Board?",
+    "choices": [
+      { "label": "a", "text": "RA 2067" },
+      { "label": "b", "text": "RA 7687" },
+      { "label": "c", "text": "RA 8439" },
+      { "label": "d", "text": "RA 11035" }
+    ],
+    "answer": "a"
+  },
+  {
+    "id": 4037,
+    "question": "[Part II - Multiple Choice] A Filipino materials scientist working overseas is invited to conduct short-term research, mentor local researchers, and share expertise with Philippine institutions. Which DOST program best fits this situation?",
+    "choices": [
+      { "label": "a", "text": "Balik Scientist Program" },
+      { "label": "b", "text": "Pantawid Pamilya Program" },
+      { "label": "c", "text": "National Greening Program" },
+      { "label": "d", "text": "K to 12 Program" }
+    ],
+    "answer": "a"
+  },
+  {
+    "id": 4038,
+    "question": "[Part II - Multiple Choice] A student chooses a career not only for income but also because it allows meaningful service, personal growth, and good character. This choice best reflects Aristotle's idea of:",
+    "choices": [
+      { "label": "a", "text": "Eudaimonia" },
+      { "label": "b", "text": "Consumerism" },
+      { "label": "c", "text": "Standing-reserve" },
+      { "label": "d", "text": "Genetic enhancement" }
+    ],
+    "answer": "a"
+  },
+  {
+    "id": 4039,
+    "question": "[Part II - Multiple Choice] Two learners both receive tablets, but only one has internet access, accessible learning materials, and training. Amartya Sen's capability approach would emphasize that:",
+    "choices": [
+      { "label": "a", "text": "Owning the same device guarantees equal opportunity" },
+      { "label": "b", "text": "Real freedom depends on what people are able to do with available resources" },
+      { "label": "c", "text": "Technology should never be used in education" },
+      { "label": "d", "text": "Income is the only measure of well-being" }
+    ],
+    "answer": "b"
+  },
+  {
+    "id": 4040,
+    "question": "[Part II - Multiple Choice] A community makerspace teaches young people to repair devices, share tools, and design projects that solve local problems. Which value is most strongly expressed?",
+    "choices": [
+      { "label": "a", "text": "Kapwa through cooperative technological practice" },
+      { "label": "b", "text": "Consumerism through constant replacement" },
+      { "label": "c", "text": "Isolation from community concerns" },
+      { "label": "d", "text": "Technology as an end in itself" }
+    ],
+    "answer": "a"
+  },
+  {
+    "id": 4041,
+    "question": "[Part II - Multiple Choice] What is an intellectual revolution?",
+    "choices": [
+      { "label": "a", "text": "A war fought over new inventions" },
+      { "label": "b", "text": "A period where paradigm shifts occurred and widely accepted scientific beliefs were challenged" },
+      { "label": "c", "text": "A period when schools were first built" },
+      { "label": "d", "text": "A movement that rejected all forms of science" }
+    ],
+    "answer": "b"
+  },
+  {
+    "id": 4042,
+    "question": "[Part II - Multiple Choice] Whose geocentric model did Nicolaus Copernicus challenge?",
+    "choices": [
+      { "label": "a", "text": "Galileo" },
+      { "label": "b", "text": "Kepler" },
+      { "label": "c", "text": "Newton" },
+      { "label": "d", "text": "Ptolemy" }
+    ],
+    "answer": "d"
+  },
+  {
+    "id": 4043,
+    "question": "[Part II - Multiple Choice] What confirmed and refined the Copernican model?",
+    "choices": [
+      { "label": "a", "text": "Galileo's telescope observations and Kepler's elliptical orbits" },
+      { "label": "b", "text": "Darwin's theory of evolution" },
+      { "label": "c", "text": "Freud's psychoanalysis" },
+      { "label": "d", "text": "Gutenberg's printing press" }
+    ],
+    "answer": "a"
+  },
+  {
+    "id": 4044,
+    "question": "[Part II - Multiple Choice] In what book did Charles Darwin introduce the theory of evolution?",
+    "choices": [
+      { "label": "a", "text": "The Interpretation of Dreams" },
+      { "label": "b", "text": "Principia Mathematica" },
+      { "label": "c", "text": "On the Origin of Species" },
+      { "label": "d", "text": "The Forty-Two-Line Bible" }
+    ],
+    "answer": "c"
+  },
+  {
+    "id": 4045,
+    "question": "[Part II - Multiple Choice] Physical similarities that evolved independently in different organisms because they lived in similar environments are called:",
+    "choices": [
+      { "label": "a", "text": "Homologous structures" },
+      { "label": "b", "text": "Analogous structures" },
+      { "label": "c", "text": "Molecular structures" },
+      { "label": "d", "text": "Geographic structures" }
+    ],
+    "answer": "b"
+  },
+  {
+    "id": 4046,
+    "question": "[Part II - Multiple Choice] In Freud's theory of personality, which element operates as a moral conscience?",
+    "choices": [
+      { "label": "a", "text": "Id" },
+      { "label": "b", "text": "Ego" },
+      { "label": "c", "text": "Superego" },
+      { "label": "d", "text": "Unconscious" }
+    ],
+    "answer": "c"
+  },
+  {
+    "id": 4047,
+    "question": "[Part II - Multiple Choice] Around what time did the Digital/Information Age begin?",
+    "choices": [
+      { "label": "a", "text": "1970s" },
+      { "label": "b", "text": "1800s" },
+      { "label": "c", "text": "1920s" },
+      { "label": "d", "text": "2010s" }
+    ],
+    "answer": "a"
+  },
+  {
+    "id": 4048,
+    "question": "[Part II - Multiple Choice] Who created the World Wide Web at CERN?",
+    "choices": [
+      { "label": "a", "text": "Bill Gates" },
+      { "label": "b", "text": "Steve Jobs" },
+      { "label": "c", "text": "Vinton Cerf" },
+      { "label": "d", "text": "Tim Berners-Lee" }
+    ],
+    "answer": "d"
+  },
+  {
+    "id": 4049,
+    "question": "[Part II - Multiple Choice] Who sent the first email in 1971?",
+    "choices": [
+      { "label": "a", "text": "Manny Fernandez" },
+      { "label": "b", "text": "Ray Tomlinson" },
+      { "label": "c", "text": "Larry Page" },
+      { "label": "d", "text": "Andy Grove" }
+    ],
+    "answer": "b"
+  },
+  {
+    "id": 4050,
+    "question": "[Part II - Multiple Choice] Who are the creators of Google?",
+    "choices": [
+      { "label": "a", "text": "Larry Page and Sergey Brin" },
+      { "label": "b", "text": "Vinton Cerf and Robert Kahn" },
+      { "label": "c", "text": "Steve Jobs and Bill Gates" },
+      { "label": "d", "text": "Tim Berners-Lee and Ray Tomlinson" }
+    ],
+    "answer": "a"
+  },
+  {
+    "id": 4051,
+    "question": "[Part III - True or False] A barangay app designed through community consultation and shared responsibility reflects Kapwa and bayanihan.",
+    "choices": [
+      { "label": "a", "text": "True" },
+      { "label": "b", "text": "False" }
+    ],
+    "answer": "a"
+  },
+  {
+    "id": 4052,
+    "question": "[Part III - True or False] Viewing a forest only in terms of the timber it can supply is an example of enframing.",
+    "choices": [
+      { "label": "a", "text": "True" },
+      { "label": "b", "text": "False" }
+    ],
+    "answer": "a"
+  },
+  {
+    "id": 4053,
+    "question": "[Part III - True or False] Heidegger believed that technology is merely a neutral tool with no effect on how people understand the world.",
+    "choices": [
+      { "label": "a", "text": "True" },
+      { "label": "b", "text": "False" }
+    ],
+    "answer": "b"
+  },
+  {
+    "id": 4054,
+    "question": "[Part III - True or False] A school that asks how facial-recognition technology may affect trust and privacy is questioning technology rather than accepting it uncritically.",
+    "choices": [
+      { "label": "a", "text": "True" },
+      { "label": "b", "text": "False" }
+    ],
+    "answer": "a"
+  },
+  {
+    "id": 4055,
+    "question": "[Part III - True or False] Virtue ethics judges' actions only by rules and ignores character.",
+    "choices": [
+      { "label": "a", "text": "True" },
+      { "label": "b", "text": "False" }
+    ],
+    "answer": "b"
+  },
+  {
+    "id": 4056,
+    "question": "[Part III - True or False] A technology policy that considers human flourishing, virtue, autonomy, community relationships, and environmental effects is a defensible response to technological enframing.",
+    "choices": [
+      { "label": "a", "text": "True" },
+      { "label": "b", "text": "False" }
+    ],
+    "answer": "a"
+  },
+  {
+    "id": 4057,
+    "question": "[Part III - True or False] Because technology can shape how people see the world, Heidegger's ideas require society to reject every form of technology.",
+    "choices": [
+      { "label": "a", "text": "True" },
+      { "label": "b", "text": "False" }
+    ],
+    "answer": "b"
+  },
+  {
+    "id": 4058,
+    "question": "[Part III - True or False] If genetic engineering is technically successful, it is automatically ethical even when long-term risks and justice concerns are ignored.",
+    "choices": [
+      { "label": "a", "text": "True" },
+      { "label": "b", "text": "False" }
+    ],
+    "answer": "b"
+  },
+  {
+    "id": 4059,
+    "question": "[Part III - True or False] An AI hiring system is ethically stronger when it is regularly audited for bias and provides people a way to question decisions.",
+    "choices": [
+      { "label": "a", "text": "True" },
+      { "label": "b", "text": "False" }
+    ],
+    "answer": "a"
+  },
+  {
+    "id": 4060,
+    "question": "[Part III - True or False] Ethical evaluation of gene editing should consider safety, informed consent, fairness, and possible effects on future generations.",
+    "choices": [
+      { "label": "a", "text": "True" },
+      { "label": "b", "text": "False" }
+    ],
+    "answer": "a"
+  },
+  {
+    "id": 4061,
+    "question": "[Part III - True or False] If only wealthy people can access enhancement technologies, concerns about justice and inequality may arise.",
+    "choices": [
+      { "label": "a", "text": "True" },
+      { "label": "b", "text": "False" }
+    ],
+    "answer": "a"
+  },
+  {
+    "id": 4062,
+    "question": "[Part III - True or False] Posthumanism always rejects human dignity and ethical responsibility.",
+    "choices": [
+      { "label": "a", "text": "True" },
+      { "label": "b", "text": "False" }
+    ],
+    "answer": "b"
+  },
+  {
+    "id": 4063,
+    "question": "[Part III - True or False] Making an AI system more transparent can improve accountability, although transparency alone may not solve every ethical problem.",
+    "choices": [
+      { "label": "a", "text": "True" },
+      { "label": "b", "text": "False" }
+    ],
+    "answer": "a"
+  },
+  {
+    "id": 4064,
+    "question": "[Part III - True or False] Responsible development of robotics should include safety testing, human oversight, and consideration of effects on workers and communities.",
+    "choices": [
+      { "label": "a", "text": "True" },
+      { "label": "b", "text": "False" }
+    ],
+    "answer": "a"
+  },
+  {
+    "id": 4065,
+    "question": "[Part III - True or False] Governments should create adaptable safeguards for emerging technologies by considering benefits, risks, rights, and public participation.",
+    "choices": [
+      { "label": "a", "text": "True" },
+      { "label": "b", "text": "False" }
+    ],
+    "answer": "a"
+  }
+]
