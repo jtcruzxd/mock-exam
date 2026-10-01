@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useCallback } from "react";
-import { questions as allQuestions } from "@/app/lib/questions";
+import { getActiveQuestions } from "@/app/lib/questionsStore";
 import LandingPage from "@/app/components/LandingPage";
 import ExamPage from "@/app/components/ExamPage";
 import ResultsPage from "@/app/components/ResultsPage";
@@ -28,8 +28,9 @@ export default function Home() {
   const handleStart = useCallback((name: string, section: string) => {
     setStudentName(name);
     setStudentSection(section);
-    // Shuffle questions fresh for every new session
-    setShuffledQuestions(shuffleArray(allQuestions));
+    // Shuffle questions fresh for every new session — use active question bank
+    // (reads localStorage override set by admin, falls back to bundled questions)
+    setShuffledQuestions(shuffleArray(getActiveQuestions()));
     setView("exam");
     window.scrollTo({ top: 0 });
   }, []);

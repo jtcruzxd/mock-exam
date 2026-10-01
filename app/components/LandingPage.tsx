@@ -125,6 +125,11 @@ export default function LandingPage({ onStart }: LandingPageProps) {
         <p className="text-center text-xs text-gray-400 mt-4">
           Educate · Empower · Excel
         </p>
+        <p className="text-center mt-2">
+          <a href="/admin" className="text-xs text-gray-300 hover:text-indigo-500 transition">
+            Admin
+          </a>
+        </p>
       </div>
     </div>
   );
