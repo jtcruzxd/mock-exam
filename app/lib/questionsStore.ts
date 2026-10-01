@@ -2,46 +2,54 @@
  * questionsStore.ts
  *
  * Single source of truth for questions at runtime.
- * - Reads from localStorage override first (set by the admin page).
- * - Falls back to the bundled static question bank.
+ * - Server-side: reads/writes via /api/questions (persisted to data/questions.json).
+ * - Falls back to the bundled static question bank when the API returns nothing.
  * - The exam page calls getActiveQuestions() on every session start.
+ *
+ * localStorage is no longer used — data is shared across all devices.
  */
 
 import { questions as bundledQuestions, Question } from "@/app/lib/questions";
 
-export const STORAGE_KEY = "adminQuestions";
+export type { Question };
+export { bundledQuestions };
 
-/** Return the active question bank (override → bundled fallback). */
-export function getActiveQuestions(): Question[] {
-  if (typeof window === "undefined") return bundledQuestions;
+/** Return the active question bank from the server (falls back to bundled). */
+export async function getActiveQuestions(): Promise<Question[]> {
   try {
-    const raw = localStorage.getItem(STORAGE_KEY);
-    if (!raw) return bundledQuestions;
-    const parsed: Question[] = JSON.parse(raw);
-    if (Array.isArray(parsed) && parsed.length > 0) return parsed;
-  } catch {
-    // corrupt data — ignore and use bundled
+    const res = await fetch("/api/questions", { cache: "no-store" });
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    const data: Question[] = await res.json();
+    if (Array.isArray(data) && data.length > 0) return data;
+  } catch (err) {
+    console.warn("[questionsStore] Could not reach /api/questions:", err);
   }
   return bundledQuestions;
 }
 
-/** Persist an edited question bank to localStorage. */
-export function saveQuestions(qs: Question[]): void {
-  if (typeof window === "undefined") return;
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(qs));
+/** Persist a question bank to the server. */
+export async function saveQuestions(qs: Question[]): Promise<void> {
+  const res = await fetch("/api/questions", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(qs),
+  });
+  if (!res.ok) throw new Error(`Failed to save questions: HTTP ${res.status}`);
 }
 
-/** Clear the override and revert to the bundled questions. */
-export function resetToDefault(): void {
-  if (typeof window === "undefined") return;
-  localStorage.removeItem(STORAGE_KEY);
+/** Clear the server override and revert to bundled questions. */
+export async function resetToDefault(): Promise<void> {
+  await fetch("/api/questions", { method: "DELETE" });
 }
 
-/** True if an override is currently active. */
-export function hasOverride(): boolean {
-  if (typeof window === "undefined") return false;
-  return !!localStorage.getItem(STORAGE_KEY);
+/** True if a server override is currently active. */
+export async function hasOverride(): Promise<boolean> {
+  try {
+    const res = await fetch("/api/questions?meta=1", { cache: "no-store" });
+    if (!res.ok) return false;
+    const data: { hasOverride: boolean } = await res.json();
+    return data.hasOverride === true;
+  } catch {
+    return false;
+  }
 }
-
-export type { Question };
-export { bundledQuestions };

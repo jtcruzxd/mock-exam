@@ -25,14 +25,14 @@ export default function Home() {
   const [studentSection, setStudentSection] = useState("");
   const [shuffledQuestions, setShuffledQuestions] = useState<Question[]>([]);
   const [submittedAnswers, setSubmittedAnswers] = useState<Record<number, string>>({});
-  // Default to defaultExamConfig so it's never null
   const [examConfig, setExamConfig] = useState<ExamConfig>(defaultExamConfig);
 
-  const handleStart = useCallback((name: string, section: string) => {
+  const handleStart = useCallback(async (name: string, section: string) => {
+    const [qs, cfg] = await Promise.all([getActiveQuestions(), getActiveConfig()]);
     setStudentName(name);
     setStudentSection(section);
-    setShuffledQuestions(shuffleArray(getActiveQuestions()));
-    setExamConfig(getActiveConfig());
+    setShuffledQuestions(shuffleArray(qs));
+    setExamConfig(cfg);
     setView("exam");
     window.scrollTo({ top: 0 });
   }, []);
@@ -54,7 +54,6 @@ export default function Home() {
   }, []);
 
   if (view === "landing") {
-    // Pass onStart so the button actually works
     return <LandingPage onStart={handleStart} />;
   }
 

@@ -1,7 +1,7 @@
 /**
  * examConfig.ts
  * Stores editable exam metadata — title, exam type, school info, etc.
- * Admin page can override these via localStorage.
+ * Admin page can override these via /api/config (server-persisted, shared across devices).
  */
 
 export interface ExamConfig {
@@ -16,33 +16,39 @@ export const defaultExamConfig: ExamConfig = {
   school: "Occidental Mindoro State University",
   department: "School of Accountancy",
   examType: "Midterm Examination",
-  subject: "Data Warehousing and Management",
-  instruction: "Choose the correct answer for each item.",
+  subject: "Science, Technology, and Society",
+  instruction: "Part I – Choose the correct identification. Part II – Choose the best answer. Part III – Choose True or False.",
 };
 
-export const CONFIG_STORAGE_KEY = "adminExamConfig";
-
-export function getActiveConfig(): ExamConfig {
-  if (typeof window === "undefined") return defaultExamConfig;
+/** Return the active exam config from the server (falls back to defaults). */
+export async function getActiveConfig(): Promise<ExamConfig> {
   try {
-    const raw = localStorage.getItem(CONFIG_STORAGE_KEY);
-    if (!raw) return defaultExamConfig;
-    const parsed = JSON.parse(raw);
-    if (parsed && typeof parsed === "object") {
-      return { ...defaultExamConfig, ...parsed };
+    const res = await fetch("/api/config", { cache: "no-store" });
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    const data = await res.json();
+    if (data && typeof data === "object") {
+      return { ...defaultExamConfig, ...data };
     }
-  } catch {
-    // ignore
+  } catch (err) {
+    console.warn("[examConfig] Could not reach /api/config:", err);
   }
   return defaultExamConfig;
 }
 
-export function saveConfig(config: ExamConfig): void {
-  if (typeof window === "undefined") return;
-  localStorage.setItem(CONFIG_STORAGE_KEY, JSON.stringify(config));
+/** Persist the config to the server. */
+export async function saveConfig(config: ExamConfig): Promise<void> {
+  const res = await fetch("/api/config", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(config),
+  });
+  if (!res.ok) throw new Error(`Failed to save config: HTTP ${res.status}`);
 }
 
-export function resetConfig(): void {
-  if (typeof window === "undefined") return;
-  localStorage.removeItem(CONFIG_STORAGE_KEY);
+/** Remove the server override, reverting to defaultExamConfig. */
+export async function resetConfig(): Promise<void> {
+  await fetch("/api/config", { method: "DELETE" });
 }
+
+// ── Legacy localStorage keys (kept so old browsers don't error on stale data) ──
+export const CONFIG_STORAGE_KEY = "adminExamConfig";

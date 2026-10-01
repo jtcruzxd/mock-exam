@@ -266,7 +266,9 @@ function QuestionEditor({ question, index, onSave, onCancel }: EditorProps) {
                       <input
                         type="text"
                         value={choice.text}
-                        onChange={(e) => setChoiceText(choice.label, e.target.value)}
+                        onChange={(e) =>
+                          setChoiceText(choice.label, e.target.value)
+                        }
                         className={`w-full px-3 py-2 rounded-lg border text-sm text-gray-800 focus:outline-none focus:ring-2 focus:ring-indigo-400 transition ${
                           errors[`choice_${choice.label}`]
                             ? "border-red-400 bg-red-50"
@@ -340,6 +342,7 @@ export default function AdminPage() {
   const [toast, setToast] = useState<string | null>(null);
   const [deleteConfirm, setDeleteConfirm] = useState<number | null>(null);
   const [search, setSearch] = useState("");
+  const [saving, setSaving] = useState(false);
   const importRef = useRef<HTMLInputElement>(null);
 
   // Exam config state
@@ -349,9 +352,16 @@ export default function AdminPage() {
   // Load questions + config after unlock
   useEffect(() => {
     if (!unlocked) return;
-    setQuestions(deepClone(getActiveQuestions()));
-    setOverrideActive(hasOverride());
-    setConfig(getActiveConfig());
+    (async () => {
+      const [qs, cfg, override] = await Promise.all([
+        getActiveQuestions(),
+        getActiveConfig(),
+        hasOverride(),
+      ]);
+      setQuestions(deepClone(qs));
+      setConfig(cfg);
+      setOverrideActive(override);
+    })();
   }, [unlocked]);
 
   function showToast(msg: string) {
@@ -366,22 +376,36 @@ export default function AdminPage() {
     setConfigDirty(true);
   }
 
-  function handleSaveConfig() {
-    saveConfig(config);
-    setConfigDirty(false);
-    showToast("Exam settings saved.");
+  async function handleSaveConfig() {
+    setSaving(true);
+    try {
+      await saveConfig(config);
+      setConfigDirty(false);
+      showToast("Exam settings saved.");
+    } catch {
+      showToast("❌ Failed to save settings.");
+    } finally {
+      setSaving(false);
+    }
   }
 
-  function handleResetConfig() {
-    resetConfig();
-    setConfig(defaultExamConfig);
-    setConfigDirty(false);
-    showToast("Exam settings reset to default.");
+  async function handleResetConfig() {
+    setSaving(true);
+    try {
+      await resetConfig();
+      setConfig(defaultExamConfig);
+      setConfigDirty(false);
+      showToast("Exam settings reset to default.");
+    } catch {
+      showToast("❌ Failed to reset settings.");
+    } finally {
+      setSaving(false);
+    }
   }
 
   // ── Persist ──────────────────────────────────────────────────────────────
 
-  function handleSave(q: Question) {
+  async function handleSave(q: Question) {
     let updated: Question[];
     if (isNew) {
       updated = [...questions, q];
@@ -390,46 +414,80 @@ export default function AdminPage() {
         i === editingIndex ? q : existing
       );
     }
-    setQuestions(updated);
-    saveQuestions(updated);
-    setOverrideActive(true);
-    setEditingIndex(null);
-    setIsNew(false);
-    showToast(isNew ? "Question added." : "Question saved.");
+    setSaving(true);
+    try {
+      await saveQuestions(updated);
+      setQuestions(updated);
+      setOverrideActive(true);
+      setEditingIndex(null);
+      setIsNew(false);
+      showToast(isNew ? "Question added." : "Question saved.");
+    } catch {
+      showToast("❌ Failed to save question.");
+    } finally {
+      setSaving(false);
+    }
   }
 
-  function handleDelete(index: number) {
+  async function handleDelete(index: number) {
     const updated = questions.filter((_, i) => i !== index);
-    setQuestions(updated);
-    saveQuestions(updated);
-    setDeleteConfirm(null);
-    showToast("Question deleted.");
+    setSaving(true);
+    try {
+      await saveQuestions(updated);
+      setQuestions(updated);
+      setDeleteConfirm(null);
+      showToast("Question deleted.");
+    } catch {
+      showToast("❌ Failed to delete question.");
+    } finally {
+      setSaving(false);
+    }
   }
 
-  function handleMoveUp(index: number) {
+  async function handleMoveUp(index: number) {
     if (index === 0) return;
     const updated = [...questions];
     [updated[index - 1], updated[index]] = [updated[index], updated[index - 1]];
-    setQuestions(updated);
-    saveQuestions(updated);
+    setSaving(true);
+    try {
+      await saveQuestions(updated);
+      setQuestions(updated);
+    } catch {
+      showToast("❌ Failed to reorder.");
+    } finally {
+      setSaving(false);
+    }
   }
 
-  function handleMoveDown(index: number) {
+  async function handleMoveDown(index: number) {
     if (index === questions.length - 1) return;
     const updated = [...questions];
     [updated[index], updated[index + 1]] = [updated[index + 1], updated[index]];
-    setQuestions(updated);
-    saveQuestions(updated);
+    setSaving(true);
+    try {
+      await saveQuestions(updated);
+      setQuestions(updated);
+    } catch {
+      showToast("❌ Failed to reorder.");
+    } finally {
+      setSaving(false);
+    }
   }
 
-  function handleReset() {
-    resetToDefault();
-    resetConfig();
-    setQuestions(deepClone(bundledQuestions));
-    setConfig(defaultExamConfig);
-    setOverrideActive(false);
-    setConfigDirty(false);
-    showToast("Reset to original questions and settings.");
+  async function handleReset() {
+    setSaving(true);
+    try {
+      await Promise.all([resetToDefault(), resetConfig()]);
+      setQuestions(deepClone(bundledQuestions));
+      setConfig(defaultExamConfig);
+      setOverrideActive(false);
+      setConfigDirty(false);
+      showToast("Reset to original questions and settings.");
+    } catch {
+      showToast("❌ Failed to reset.");
+    } finally {
+      setSaving(false);
+    }
   }
 
   // ── Export as questions.ts (ready to push) ───────────────────────────────
@@ -469,27 +527,31 @@ export const defaultExamConfig: ExamConfig = ${JSON.stringify(config, null, 2)};
 
 export const CONFIG_STORAGE_KEY = "adminExamConfig";
 
-export function getActiveConfig(): ExamConfig {
-  if (typeof window === "undefined") return defaultExamConfig;
+export async function getActiveConfig(): Promise<ExamConfig> {
   try {
-    const raw = localStorage.getItem(CONFIG_STORAGE_KEY);
-    if (!raw) return defaultExamConfig;
-    const parsed = JSON.parse(raw);
-    if (parsed && typeof parsed === "object") {
-      return { ...defaultExamConfig, ...parsed };
+    const res = await fetch("/api/config", { cache: "no-store" });
+    if (!res.ok) throw new Error(\`HTTP \${res.status}\`);
+    const data = await res.json();
+    if (data && typeof data === "object") {
+      return { ...defaultExamConfig, ...data };
     }
-  } catch { /* ignore */ }
+  } catch (err) {
+    console.warn("[examConfig] Could not reach /api/config:", err);
+  }
   return defaultExamConfig;
 }
 
-export function saveConfig(config: ExamConfig): void {
-  if (typeof window === "undefined") return;
-  localStorage.setItem(CONFIG_STORAGE_KEY, JSON.stringify(config));
+export async function saveConfig(config: ExamConfig): Promise<void> {
+  const res = await fetch("/api/config", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(config),
+  });
+  if (!res.ok) throw new Error(\`Failed to save config: HTTP \${res.status}\`);
 }
 
-export function resetConfig(): void {
-  if (typeof window === "undefined") return;
-  localStorage.removeItem(CONFIG_STORAGE_KEY);
+export async function resetConfig(): Promise<void> {
+  await fetch("/api/config", { method: "DELETE" });
 }
 `;
     const blob = new Blob([tsContent], { type: "text/plain" });
@@ -522,16 +584,19 @@ export function resetConfig(): void {
     const file = e.target.files?.[0];
     if (!file) return;
     const reader = new FileReader();
-    reader.onload = (ev) => {
+    reader.onload = async (ev) => {
       try {
         const parsed: Question[] = JSON.parse(ev.target?.result as string);
         if (!Array.isArray(parsed) || parsed.length === 0) throw new Error();
+        setSaving(true);
+        await saveQuestions(parsed);
         setQuestions(parsed);
-        saveQuestions(parsed);
         setOverrideActive(true);
-        showToast(`Imported ${parsed.length} questions.`);
+        showToast(`Imported ${parsed.length} questions — visible to all devices.`);
       } catch {
         showToast("❌ Invalid JSON file.");
+      } finally {
+        setSaving(false);
       }
     };
     reader.readAsText(file);
@@ -573,6 +638,9 @@ export function resetConfig(): void {
                 <span className="ml-2 bg-amber-400 text-amber-900 text-xs font-semibold px-1.5 py-0.5 rounded">
                   EDITED
                 </span>
+              )}
+              {saving && (
+                <span className="ml-2 text-indigo-300 animate-pulse">saving…</span>
               )}
             </p>
           </div>
@@ -616,7 +684,8 @@ export function resetConfig(): void {
             {/* Import */}
             <button
               onClick={() => importRef.current?.click()}
-              className="border border-gray-300 text-gray-700 hover:bg-gray-50 font-semibold text-xs px-4 py-2 rounded-lg transition"
+              disabled={saving}
+              className="border border-gray-300 text-gray-700 hover:bg-gray-50 disabled:opacity-50 font-semibold text-xs px-4 py-2 rounded-lg transition"
             >
               ↑ Import JSON
             </button>
@@ -632,7 +701,8 @@ export function resetConfig(): void {
             {overrideActive && (
               <button
                 onClick={handleReset}
-                className="border border-red-300 text-red-600 hover:bg-red-50 font-semibold text-xs px-4 py-2 rounded-lg transition ml-auto"
+                disabled={saving}
+                className="border border-red-300 text-red-600 hover:bg-red-50 disabled:opacity-50 font-semibold text-xs px-4 py-2 rounded-lg transition ml-auto"
               >
                 ↺ Reset to Original
               </button>
@@ -640,12 +710,14 @@ export function resetConfig(): void {
           </div>
 
           {overrideActive && (
-            <div className="mt-3 bg-amber-50 border border-amber-200 rounded-lg px-3 py-2.5 text-xs text-amber-800 space-y-1">
-              <p className="font-bold">⚠️ Your edits are saved in this browser only.</p>
-              <p>To make them permanent for all students on Vercel:</p>
+            <div className="mt-3 bg-green-50 border border-green-200 rounded-lg px-3 py-2.5 text-xs text-green-800 space-y-1">
+              <p className="font-bold">✅ Questions are saved on the server — all devices will see these.</p>
+              <p className="text-green-700">
+                To make them permanent (survive server restarts / redeployments):
+              </p>
               <ol className="list-decimal list-inside space-y-0.5 ml-1">
                 <li>Click <strong>↓ Export questions.ts</strong> above</li>
-                <li>Replace <code className="bg-amber-100 px-1 rounded">mock-exam/app/lib/questions.ts</code> with the downloaded file</li>
+                <li>Replace <code className="bg-green-100 px-1 rounded">mock-exam/app/lib/questions.ts</code> with the downloaded file</li>
                 <li>Push to GitHub — Vercel redeploys automatically in ~1 min</li>
               </ol>
             </div>
@@ -660,7 +732,8 @@ export function resetConfig(): void {
               {configDirty && (
                 <button
                   onClick={handleSaveConfig}
-                  className="bg-indigo-700 hover:bg-indigo-800 text-white font-semibold text-xs px-3 py-1.5 rounded-lg transition shadow"
+                  disabled={saving}
+                  className="bg-indigo-700 hover:bg-indigo-800 disabled:opacity-50 text-white font-semibold text-xs px-3 py-1.5 rounded-lg transition shadow"
                 >
                   Save Settings
                 </button>
@@ -673,7 +746,8 @@ export function resetConfig(): void {
               </button>
               <button
                 onClick={handleResetConfig}
-                className="border border-red-200 text-red-500 hover:bg-red-50 font-semibold text-xs px-3 py-1.5 rounded-lg transition"
+                disabled={saving}
+                className="border border-red-200 text-red-500 hover:bg-red-50 disabled:opacity-50 font-semibold text-xs px-3 py-1.5 rounded-lg transition"
               >
                 Reset
               </button>
@@ -763,7 +837,6 @@ export function resetConfig(): void {
           )}
 
           {filtered.map((q) => {
-            // find real index for operations
             const realIndex = questions.indexOf(q);
             const displayNum = realIndex + 1;
             const correctChoice = q.choices.find((c) => c.label === q.answer);
@@ -828,7 +901,7 @@ export function resetConfig(): void {
                       <div className="flex gap-1 mt-1">
                         <button
                           onClick={() => handleMoveUp(realIndex)}
-                          disabled={realIndex === 0}
+                          disabled={realIndex === 0 || saving}
                           className="text-xs text-gray-400 hover:text-indigo-600 disabled:opacity-30 px-2 py-1 rounded transition"
                           title="Move up"
                         >
@@ -836,7 +909,7 @@ export function resetConfig(): void {
                         </button>
                         <button
                           onClick={() => handleMoveDown(realIndex)}
-                          disabled={realIndex === questions.length - 1}
+                          disabled={realIndex === questions.length - 1 || saving}
                           className="text-xs text-gray-400 hover:text-indigo-600 disabled:opacity-30 px-2 py-1 rounded transition"
                           title="Move down"
                         >
@@ -890,7 +963,8 @@ export function resetConfig(): void {
               </button>
               <button
                 onClick={() => handleDelete(deleteConfirm)}
-                className="flex-1 bg-red-600 hover:bg-red-700 text-white font-semibold text-sm py-2.5 rounded-lg transition shadow"
+                disabled={saving}
+                className="flex-1 bg-red-600 hover:bg-red-700 disabled:opacity-50 text-white font-semibold text-sm py-2.5 rounded-lg transition shadow"
               >
                 Delete
               </button>

@@ -8,8 +8,6 @@ interface LandingPageProps {
   onStart?: (name: string, section: string) => void;
 }
 
-// LandingPage now also accepts no props — it reads config from the store itself
-// and calls window.dispatchEvent to signal the parent, or uses an injected callback.
 export default function LandingPage({ onStart }: LandingPageProps) {
   const [name, setName] = useState("");
   const [section, setSection] = useState("");
@@ -18,8 +16,11 @@ export default function LandingPage({ onStart }: LandingPageProps) {
   const [questionCount, setQuestionCount] = useState(0);
 
   useEffect(() => {
-    setConfig(getActiveConfig());
-    setQuestionCount(getActiveQuestions().length);
+    (async () => {
+      const [cfg, qs] = await Promise.all([getActiveConfig(), getActiveQuestions()]);
+      setConfig(cfg);
+      setQuestionCount(qs.length);
+    })();
   }, []);
 
   function handleSubmit(e: React.FormEvent) {
