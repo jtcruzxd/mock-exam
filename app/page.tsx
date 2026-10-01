@@ -2,7 +2,7 @@
 
 import { useState, useCallback } from "react";
 import { getActiveQuestions } from "@/app/lib/questionsStore";
-import { getActiveConfig, type ExamConfig } from "@/app/lib/examConfig";
+import { getActiveConfig, defaultExamConfig, type ExamConfig } from "@/app/lib/examConfig";
 import LandingPage from "@/app/components/LandingPage";
 import ExamPage from "@/app/components/ExamPage";
 import ResultsPage from "@/app/components/ResultsPage";
@@ -25,7 +25,8 @@ export default function Home() {
   const [studentSection, setStudentSection] = useState("");
   const [shuffledQuestions, setShuffledQuestions] = useState<Question[]>([]);
   const [submittedAnswers, setSubmittedAnswers] = useState<Record<number, string>>({});
-  const [examConfig, setExamConfig] = useState<ExamConfig | null>(null);
+  // Default to defaultExamConfig so it's never null
+  const [examConfig, setExamConfig] = useState<ExamConfig>(defaultExamConfig);
 
   const handleStart = useCallback((name: string, section: string) => {
     setStudentName(name);
@@ -45,7 +46,7 @@ export default function Home() {
   const handleRetake = useCallback(() => {
     setSubmittedAnswers({});
     setShuffledQuestions([]);
-    setExamConfig(null);
+    setExamConfig(defaultExamConfig);
     setStudentName("");
     setStudentSection("");
     setView("landing");
@@ -53,10 +54,11 @@ export default function Home() {
   }, []);
 
   if (view === "landing") {
-    return <LandingPage />;
+    // Pass onStart so the button actually works
+    return <LandingPage onStart={handleStart} />;
   }
 
-  if (view === "exam" && examConfig) {
+  if (view === "exam") {
     return (
       <ExamPage
         studentName={studentName}
@@ -68,18 +70,14 @@ export default function Home() {
     );
   }
 
-  if (view === "results" && examConfig) {
-    return (
-      <ResultsPage
-        studentName={studentName}
-        studentSection={studentSection}
-        questions={shuffledQuestions}
-        answers={submittedAnswers}
-        config={examConfig}
-        onRetake={handleRetake}
-      />
-    );
-  }
-
-  return null;
+  return (
+    <ResultsPage
+      studentName={studentName}
+      studentSection={studentSection}
+      questions={shuffledQuestions}
+      answers={submittedAnswers}
+      config={examConfig}
+      onRetake={handleRetake}
+    />
+  );
 }
