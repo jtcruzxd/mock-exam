@@ -2,11 +2,13 @@
 
 import { useState } from "react";
 import { Question } from "@/app/lib/questions";
+import { type ExamConfig } from "@/app/lib/examConfig";
 
 interface ExamPageProps {
   studentName: string;
   studentSection: string;
   questions: Question[];
+  config: ExamConfig;
   onSubmit: (answers: Record<number, string>) => void;
 }
 
@@ -14,6 +16,7 @@ export default function ExamPage({
   studentName,
   studentSection,
   questions,
+  config,
   onSubmit,
 }: ExamPageProps) {
   const [answers, setAnswers] = useState<Record<number, string>>({});
@@ -83,11 +86,11 @@ export default function ExamPage({
       <div className="max-w-3xl mx-auto px-4 pt-8 pb-2">
         <div className="text-center mb-6">
           <h1 className="text-xl font-bold text-gray-800">
-            Data Warehousing and Management
+            {config.subject}
           </h1>
-          <p className="text-gray-500 text-sm mt-1">Midterm Examination</p>
+          <p className="text-gray-500 text-sm mt-1">{config.examType}</p>
           <p className="text-gray-400 text-xs mt-1">
-            Choose the correct answer for each item.
+            {config.instruction}
           </p>
         </div>
 

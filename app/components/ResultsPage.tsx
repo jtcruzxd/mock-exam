@@ -1,12 +1,14 @@
 "use client";
 
 import { Question } from "@/app/lib/questions";
+import { type ExamConfig } from "@/app/lib/examConfig";
 
 interface ResultsPageProps {
   studentName: string;
   studentSection: string;
   questions: Question[];
   answers: Record<number, string>;
+  config: ExamConfig;
   onRetake: () => void;
 }
 
@@ -15,6 +17,7 @@ export default function ResultsPage({
   studentSection,
   questions,
   answers,
+  config,
   onRetake,
 }: ResultsPageProps) {
   const total = questions.length;
@@ -40,9 +43,9 @@ export default function ResultsPage({
             Exam Results
           </p>
           <h1 className="text-white text-xl font-bold">
-            Data Warehousing and Management
+            {config.subject}
           </h1>
-          <p className="text-indigo-200 text-sm mt-1">Midterm Examination</p>
+          <p className="text-indigo-200 text-sm mt-1">{config.examType}</p>
         </div>
       </div>
 

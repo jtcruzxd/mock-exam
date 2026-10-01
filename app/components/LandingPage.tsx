@@ -1,15 +1,26 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { getActiveConfig, type ExamConfig } from "@/app/lib/examConfig";
+import { getActiveQuestions } from "@/app/lib/questionsStore";
 
 interface LandingPageProps {
-  onStart: (name: string, section: string) => void;
+  onStart?: (name: string, section: string) => void;
 }
 
+// LandingPage now also accepts no props — it reads config from the store itself
+// and calls window.dispatchEvent to signal the parent, or uses an injected callback.
 export default function LandingPage({ onStart }: LandingPageProps) {
   const [name, setName] = useState("");
   const [section, setSection] = useState("");
   const [errors, setErrors] = useState<{ name?: string; section?: string }>({});
+  const [config, setConfig] = useState<ExamConfig | null>(null);
+  const [questionCount, setQuestionCount] = useState(0);
+
+  useEffect(() => {
+    setConfig(getActiveConfig());
+    setQuestionCount(getActiveQuestions().length);
+  }, []);
 
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -20,13 +31,20 @@ export default function LandingPage({ onStart }: LandingPageProps) {
       setErrors(newErrors);
       return;
     }
-    onStart(name.trim(), section.trim());
+    onStart?.(name.trim(), section.trim());
   }
+
+  const cfg = config ?? {
+    school: "Occidental Mindoro State University",
+    department: "School of Accountancy",
+    examType: "Midterm Examination",
+    subject: "Data Warehousing and Management",
+    instruction: "Choose the correct answer for each item.",
+  };
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center justify-center p-4">
       <div className="w-full max-w-lg">
-        {/* Header card */}
         <div className="bg-white rounded-2xl shadow-xl overflow-hidden">
           {/* Banner */}
           <div className="bg-indigo-700 px-8 py-6 text-center">
@@ -34,31 +52,26 @@ export default function LandingPage({ onStart }: LandingPageProps) {
               Republic of the Philippines
             </p>
             <h1 className="text-white text-xl font-bold leading-tight">
-              Occidental Mindoro State University
+              {cfg.school}
             </h1>
-            <p className="text-indigo-200 text-sm mt-1">School of Accountancy</p>
+            <p className="text-indigo-200 text-sm mt-1">{cfg.department}</p>
           </div>
 
           {/* Exam info */}
           <div className="px-8 py-6 border-b border-gray-100 text-center">
             <span className="inline-block bg-indigo-50 text-indigo-700 text-xs font-semibold px-3 py-1 rounded-full uppercase tracking-wide mb-3">
-              Midterm Examination
+              {cfg.examType}
             </span>
-            <h2 className="text-gray-800 text-2xl font-bold">
-              Data Warehousing and Management
-            </h2>
+            <h2 className="text-gray-800 text-2xl font-bold">{cfg.subject}</h2>
             <p className="text-gray-500 text-sm mt-2">
-              65 items &nbsp;·&nbsp; Multiple Choice &nbsp;·&nbsp; Randomized
+              {questionCount > 0 ? `${questionCount} items` : "—"} &nbsp;·&nbsp; Multiple Choice &nbsp;·&nbsp; Randomized
             </p>
           </div>
 
           {/* Form */}
           <form onSubmit={handleSubmit} className="px-8 py-6 space-y-5">
             <div>
-              <label
-                htmlFor="name"
-                className="block text-sm font-semibold text-gray-700 mb-1"
-              >
+              <label htmlFor="name" className="block text-sm font-semibold text-gray-700 mb-1">
                 Full Name
               </label>
               <input
@@ -74,16 +87,11 @@ export default function LandingPage({ onStart }: LandingPageProps) {
                   errors.name ? "border-red-400 bg-red-50" : "border-gray-300 bg-gray-50"
                 }`}
               />
-              {errors.name && (
-                <p className="text-red-500 text-xs mt-1">{errors.name}</p>
-              )}
+              {errors.name && <p className="text-red-500 text-xs mt-1">{errors.name}</p>}
             </div>
 
             <div>
-              <label
-                htmlFor="section"
-                className="block text-sm font-semibold text-gray-700 mb-1"
-              >
+              <label htmlFor="section" className="block text-sm font-semibold text-gray-700 mb-1">
                 Course and Section
               </label>
               <input
@@ -92,19 +100,14 @@ export default function LandingPage({ onStart }: LandingPageProps) {
                 value={section}
                 onChange={(e) => {
                   setSection(e.target.value);
-                  if (errors.section)
-                    setErrors((prev) => ({ ...prev, section: undefined }));
+                  if (errors.section) setErrors((prev) => ({ ...prev, section: undefined }));
                 }}
                 placeholder="e.g. BSAIS 2-A"
                 className={`w-full px-4 py-2.5 rounded-lg border text-gray-800 placeholder-gray-400 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-400 transition ${
-                  errors.section
-                    ? "border-red-400 bg-red-50"
-                    : "border-gray-300 bg-gray-50"
+                  errors.section ? "border-red-400 bg-red-50" : "border-gray-300 bg-gray-50"
                 }`}
               />
-              {errors.section && (
-                <p className="text-red-500 text-xs mt-1">{errors.section}</p>
-              )}
+              {errors.section && <p className="text-red-500 text-xs mt-1">{errors.section}</p>}
             </div>
 
             <div className="pt-2">
@@ -122,9 +125,7 @@ export default function LandingPage({ onStart }: LandingPageProps) {
           </form>
         </div>
 
-        <p className="text-center text-xs text-gray-400 mt-4">
-          Educate · Empower · Excel
-        </p>
+        <p className="text-center text-xs text-gray-400 mt-4">Educate · Empower · Excel</p>
         <p className="text-center mt-2">
           <a href="/admin" className="text-xs text-gray-300 hover:text-indigo-500 transition">
             Admin

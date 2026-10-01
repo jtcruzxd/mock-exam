@@ -2,6 +2,7 @@
 
 import { useState, useCallback } from "react";
 import { getActiveQuestions } from "@/app/lib/questionsStore";
+import { getActiveConfig, type ExamConfig } from "@/app/lib/examConfig";
 import LandingPage from "@/app/components/LandingPage";
 import ExamPage from "@/app/components/ExamPage";
 import ResultsPage from "@/app/components/ResultsPage";
@@ -24,13 +25,13 @@ export default function Home() {
   const [studentSection, setStudentSection] = useState("");
   const [shuffledQuestions, setShuffledQuestions] = useState<Question[]>([]);
   const [submittedAnswers, setSubmittedAnswers] = useState<Record<number, string>>({});
+  const [examConfig, setExamConfig] = useState<ExamConfig | null>(null);
 
   const handleStart = useCallback((name: string, section: string) => {
     setStudentName(name);
     setStudentSection(section);
-    // Shuffle questions fresh for every new session — use active question bank
-    // (reads localStorage override set by admin, falls back to bundled questions)
     setShuffledQuestions(shuffleArray(getActiveQuestions()));
+    setExamConfig(getActiveConfig());
     setView("exam");
     window.scrollTo({ top: 0 });
   }, []);
@@ -44,6 +45,7 @@ export default function Home() {
   const handleRetake = useCallback(() => {
     setSubmittedAnswers({});
     setShuffledQuestions([]);
+    setExamConfig(null);
     setStudentName("");
     setStudentSection("");
     setView("landing");
@@ -51,27 +53,33 @@ export default function Home() {
   }, []);
 
   if (view === "landing") {
-    return <LandingPage onStart={handleStart} />;
+    return <LandingPage />;
   }
 
-  if (view === "exam") {
+  if (view === "exam" && examConfig) {
     return (
       <ExamPage
         studentName={studentName}
         studentSection={studentSection}
         questions={shuffledQuestions}
+        config={examConfig}
         onSubmit={handleSubmit}
       />
     );
   }
 
-  return (
-    <ResultsPage
-      studentName={studentName}
-      studentSection={studentSection}
-      questions={shuffledQuestions}
-      answers={submittedAnswers}
-      onRetake={handleRetake}
-    />
-  );
+  if (view === "results" && examConfig) {
+    return (
+      <ResultsPage
+        studentName={studentName}
+        studentSection={studentSection}
+        questions={shuffledQuestions}
+        answers={submittedAnswers}
+        config={examConfig}
+        onRetake={handleRetake}
+      />
+    );
+  }
+
+  return null;
 }

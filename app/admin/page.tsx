@@ -9,6 +9,13 @@ import {
   bundledQuestions,
   type Question,
 } from "@/app/lib/questionsStore";
+import {
+  getActiveConfig,
+  saveConfig,
+  resetConfig,
+  defaultExamConfig,
+  type ExamConfig,
+} from "@/app/lib/examConfig";
 
 const ADMIN_PASSWORD = "omsc2025";
 
@@ -335,16 +342,41 @@ export default function AdminPage() {
   const [search, setSearch] = useState("");
   const importRef = useRef<HTMLInputElement>(null);
 
-  // Load questions after unlock
+  // Exam config state
+  const [config, setConfig] = useState<ExamConfig>(defaultExamConfig);
+  const [configDirty, setConfigDirty] = useState(false);
+
+  // Load questions + config after unlock
   useEffect(() => {
     if (!unlocked) return;
     setQuestions(deepClone(getActiveQuestions()));
     setOverrideActive(hasOverride());
+    setConfig(getActiveConfig());
   }, [unlocked]);
 
   function showToast(msg: string) {
     setToast(msg);
     setTimeout(() => setToast(null), 3000);
+  }
+
+  // ── Config handlers ───────────────────────────────────────────────────────
+
+  function handleConfigChange(field: keyof ExamConfig, value: string) {
+    setConfig((prev) => ({ ...prev, [field]: value }));
+    setConfigDirty(true);
+  }
+
+  function handleSaveConfig() {
+    saveConfig(config);
+    setConfigDirty(false);
+    showToast("Exam settings saved.");
+  }
+
+  function handleResetConfig() {
+    resetConfig();
+    setConfig(defaultExamConfig);
+    setConfigDirty(false);
+    showToast("Exam settings reset to default.");
   }
 
   // ── Persist ──────────────────────────────────────────────────────────────
@@ -392,9 +424,12 @@ export default function AdminPage() {
 
   function handleReset() {
     resetToDefault();
+    resetConfig();
     setQuestions(deepClone(bundledQuestions));
+    setConfig(defaultExamConfig);
     setOverrideActive(false);
-    showToast("Reset to original questions.");
+    setConfigDirty(false);
+    showToast("Reset to original questions and settings.");
   }
 
   // ── Export as questions.ts (ready to push) ───────────────────────────────
@@ -417,6 +452,54 @@ export const questions: Question[] = ${JSON.stringify(questions, null, 2)};
     a.click();
     URL.revokeObjectURL(url);
     showToast("Downloaded questions.ts — replace app/lib/questions.ts and push to GitHub.");
+  }
+
+  // ── Export config as examConfig.ts (ready to push) ────────────────────────
+
+  function handleExportConfig() {
+    const tsContent = `export interface ExamConfig {
+  school: string;
+  department: string;
+  examType: string;
+  subject: string;
+  instruction: string;
+}
+
+export const defaultExamConfig: ExamConfig = ${JSON.stringify(config, null, 2)};
+
+export const CONFIG_STORAGE_KEY = "adminExamConfig";
+
+export function getActiveConfig(): ExamConfig {
+  if (typeof window === "undefined") return defaultExamConfig;
+  try {
+    const raw = localStorage.getItem(CONFIG_STORAGE_KEY);
+    if (!raw) return defaultExamConfig;
+    const parsed = JSON.parse(raw);
+    if (parsed && typeof parsed === "object") {
+      return { ...defaultExamConfig, ...parsed };
+    }
+  } catch { /* ignore */ }
+  return defaultExamConfig;
+}
+
+export function saveConfig(config: ExamConfig): void {
+  if (typeof window === "undefined") return;
+  localStorage.setItem(CONFIG_STORAGE_KEY, JSON.stringify(config));
+}
+
+export function resetConfig(): void {
+  if (typeof window === "undefined") return;
+  localStorage.removeItem(CONFIG_STORAGE_KEY);
+}
+`;
+    const blob = new Blob([tsContent], { type: "text/plain" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "examConfig.ts";
+    a.click();
+    URL.revokeObjectURL(url);
+    showToast("Downloaded examConfig.ts — replace app/lib/examConfig.ts and push.");
   }
 
   // ── Export as JSON (for re-importing) ────────────────────────────────────
@@ -566,6 +649,94 @@ export const questions: Question[] = ${JSON.stringify(questions, null, 2)};
                 <li>Push to GitHub — Vercel redeploys automatically in ~1 min</li>
               </ol>
             </div>
+          )}
+        </div>
+
+        {/* Exam Settings panel */}
+        <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-4">
+          <div className="flex items-center justify-between mb-3">
+            <h2 className="text-sm font-bold text-gray-700">⚙️ Exam Settings</h2>
+            <div className="flex gap-2">
+              {configDirty && (
+                <button
+                  onClick={handleSaveConfig}
+                  className="bg-indigo-700 hover:bg-indigo-800 text-white font-semibold text-xs px-3 py-1.5 rounded-lg transition shadow"
+                >
+                  Save Settings
+                </button>
+              )}
+              <button
+                onClick={handleExportConfig}
+                className="border border-gray-300 text-gray-600 hover:bg-gray-50 font-semibold text-xs px-3 py-1.5 rounded-lg transition"
+              >
+                ↓ Export
+              </button>
+              <button
+                onClick={handleResetConfig}
+                className="border border-red-200 text-red-500 hover:bg-red-50 font-semibold text-xs px-3 py-1.5 rounded-lg transition"
+              >
+                Reset
+              </button>
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <div>
+              <label className="block text-xs font-semibold text-gray-500 mb-1">Subject / Exam Title</label>
+              <input
+                type="text"
+                value={config.subject}
+                onChange={(e) => handleConfigChange("subject", e.target.value)}
+                className="w-full px-3 py-2 rounded-lg border border-gray-300 bg-gray-50 text-sm text-gray-800 focus:outline-none focus:ring-2 focus:ring-indigo-400 transition"
+                placeholder="e.g. Data Warehousing and Management"
+              />
+            </div>
+            <div>
+              <label className="block text-xs font-semibold text-gray-500 mb-1">Exam Type</label>
+              <input
+                type="text"
+                value={config.examType}
+                onChange={(e) => handleConfigChange("examType", e.target.value)}
+                className="w-full px-3 py-2 rounded-lg border border-gray-300 bg-gray-50 text-sm text-gray-800 focus:outline-none focus:ring-2 focus:ring-indigo-400 transition"
+                placeholder="e.g. Midterm Examination"
+              />
+            </div>
+            <div>
+              <label className="block text-xs font-semibold text-gray-500 mb-1">School Name</label>
+              <input
+                type="text"
+                value={config.school}
+                onChange={(e) => handleConfigChange("school", e.target.value)}
+                className="w-full px-3 py-2 rounded-lg border border-gray-300 bg-gray-50 text-sm text-gray-800 focus:outline-none focus:ring-2 focus:ring-indigo-400 transition"
+                placeholder="e.g. Occidental Mindoro State University"
+              />
+            </div>
+            <div>
+              <label className="block text-xs font-semibold text-gray-500 mb-1">Department</label>
+              <input
+                type="text"
+                value={config.department}
+                onChange={(e) => handleConfigChange("department", e.target.value)}
+                className="w-full px-3 py-2 rounded-lg border border-gray-300 bg-gray-50 text-sm text-gray-800 focus:outline-none focus:ring-2 focus:ring-indigo-400 transition"
+                placeholder="e.g. School of Accountancy"
+              />
+            </div>
+            <div className="sm:col-span-2">
+              <label className="block text-xs font-semibold text-gray-500 mb-1">Instruction Text</label>
+              <input
+                type="text"
+                value={config.instruction}
+                onChange={(e) => handleConfigChange("instruction", e.target.value)}
+                className="w-full px-3 py-2 rounded-lg border border-gray-300 bg-gray-50 text-sm text-gray-800 focus:outline-none focus:ring-2 focus:ring-indigo-400 transition"
+                placeholder="e.g. Choose the correct answer for each item."
+              />
+            </div>
+          </div>
+
+          {configDirty && (
+            <p className="text-amber-600 text-xs mt-2">
+              You have unsaved changes. Click <strong>Save Settings</strong> to apply.
+            </p>
           )}
         </div>
 
