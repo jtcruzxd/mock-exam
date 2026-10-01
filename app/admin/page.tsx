@@ -397,18 +397,40 @@ export default function AdminPage() {
     showToast("Reset to original questions.");
   }
 
-  // ── Export ────────────────────────────────────────────────────────────────
+  // ── Export as questions.ts (ready to push) ───────────────────────────────
 
   function handleExport() {
+    const tsContent = `export interface Question {
+  id: number;
+  question: string;
+  choices: { label: string; text: string }[];
+  answer: string;
+}
+
+export const questions: Question[] = ${JSON.stringify(questions, null, 2)};
+`;
+    const blob = new Blob([tsContent], { type: "text/plain" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "questions.ts";
+    a.click();
+    URL.revokeObjectURL(url);
+    showToast("Downloaded questions.ts — replace app/lib/questions.ts and push to GitHub.");
+  }
+
+  // ── Export as JSON (for re-importing) ────────────────────────────────────
+
+  function handleExportJson() {
     const json = JSON.stringify(questions, null, 2);
     const blob = new Blob([json], { type: "application/json" });
     const url = URL.createObjectURL(blob);
     const a = document.createElement("a");
     a.href = url;
-    a.download = "questions.json";
+    a.download = "questions-backup.json";
     a.click();
     URL.revokeObjectURL(url);
-    showToast("Exported questions.json");
+    showToast("Exported questions-backup.json");
   }
 
   // ── Import ────────────────────────────────────────────────────────────────
@@ -492,12 +514,20 @@ export default function AdminPage() {
               + Add Question
             </button>
 
-            {/* Export */}
+            {/* Export as questions.ts */}
             <button
               onClick={handleExport}
+              className="border border-indigo-300 text-indigo-700 hover:bg-indigo-50 font-semibold text-xs px-4 py-2 rounded-lg transition"
+            >
+              ↓ Export questions.ts
+            </button>
+
+            {/* Export as JSON backup */}
+            <button
+              onClick={handleExportJson}
               className="border border-gray-300 text-gray-700 hover:bg-gray-50 font-semibold text-xs px-4 py-2 rounded-lg transition"
             >
-              ↓ Export JSON
+              ↓ Backup JSON
             </button>
 
             {/* Import */}
@@ -527,11 +557,15 @@ export default function AdminPage() {
           </div>
 
           {overrideActive && (
-            <p className="text-amber-700 bg-amber-50 border border-amber-200 rounded-lg text-xs px-3 py-2 mt-3">
-              <strong>Note:</strong> Your edits are saved in this browser only. To make them live for all students, use{" "}
-              <strong>Export JSON</strong> → replace{" "}
-              <code className="bg-amber-100 px-1 rounded">app/lib/questions.ts</code> content → push to GitHub → Vercel redeploys automatically.
-            </p>
+            <div className="mt-3 bg-amber-50 border border-amber-200 rounded-lg px-3 py-2.5 text-xs text-amber-800 space-y-1">
+              <p className="font-bold">⚠️ Your edits are saved in this browser only.</p>
+              <p>To make them permanent for all students on Vercel:</p>
+              <ol className="list-decimal list-inside space-y-0.5 ml-1">
+                <li>Click <strong>↓ Export questions.ts</strong> above</li>
+                <li>Replace <code className="bg-amber-100 px-1 rounded">mock-exam/app/lib/questions.ts</code> with the downloaded file</li>
+                <li>Push to GitHub — Vercel redeploys automatically in ~1 min</li>
+              </ol>
+            </div>
           )}
         </div>
 
