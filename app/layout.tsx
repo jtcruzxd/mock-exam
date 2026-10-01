@@ -5,9 +5,9 @@ import "./globals.css";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Midterm Exam – Data Warehousing and Management",
+  title: "Midterm Mock Exam",
   description:
-    "Midterm examination for Data Warehousing and Management – Occidental Mindoro State University, School of Accountancy.",
+    "Midterm mock examination – Occidental Mindoro State University, School of Accountancy.",
 };
 
 export default function RootLayout({
